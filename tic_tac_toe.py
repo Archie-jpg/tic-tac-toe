@@ -6,7 +6,7 @@ class Game():
             [" "," "," "]]
     go = "O"
 
-    def print_grid(self):
+    def display_grid(self):
         """Uses print statements to display the current state of the grid"""
         print(" " * 4, end="")
         for i in range(3):
@@ -19,24 +19,42 @@ class Game():
             print()
             print("-" * 15)
             
-    def valid_spot(self, row: int, col: int) -> str:
+    def get_grid_ref(self, grid_ref: str) -> tuple[int, int]:
+        """Check that the grid reference is valid, returning the row and column if it is
+
+        Args:
+            grid_ref (str): Two numbers that are the requested row and column
+
+        Returns:
+            tuple[int, int]: Returns the row and column of the grid reference
+            
+        Raises:
+            ValueError: Occurs if the grid reference is not valid
+        """
+        if len(grid_ref) != 2:
+            raise ValueError("Grid ref should be two didgits")
+        elif not grid_ref[0].isnumeric() or not grid_ref[1].isnumeric():
+            raise ValueError("Grid ref should be made up of two numbers")
+        else:
+            return (int(grid_ref[0]), int(grid_ref[1]))
+            
+    def valid_spot(self, row: int, col: int) -> NoReturn:
         """Check that the place the X or O is to be placed is on the grid and not taken
 
         Args:
             row (int): Row to put marker on, must be between 0 and 2
             col (int): Column to put marker on, must be between 0 and 2
-        
-        Returns:
-            str: "" if the spot is valid, otherwise contains the reason why the marker cannot be placed there
+            
+        Raises:
+            ValueError: If the spot chosen is either not on the grid or already taken
         """
         if row > 2 or row < 0:
-            return "Row chosen must be within grid"
+            raise ValueError("Row chosen must be within grid")
         elif col > 2 or col < 0:
-            return "Col chosen must be within grid"
+            raise ValueError("Col chosen must be within grid")
         elif self.grid[row][col] != " ":
-            return "This spot has already been taken"
-        else:
-            return ""
+            raise ValueError("This spot has already been taken")
+        
         
     def swap_go(self) -> NoReturn:
         """Switchs who's go it currently is (if go is X, swap to O, otherwise swap to X)"""
@@ -45,8 +63,8 @@ class Game():
         else:
             self.go = "X"
             
-    def place_marker(self, row: int, col: int) -> bool:
-        """Checks that marker can be placed in grid reference given, placing it there if it can and changing the go to the other player
+    def place_marker(self, grid_ref: str) -> bool:
+        """Takes the grid ref and places a marker at that spot if possible. Prints out an error message if it was not possible
 
         Args:
             row (int): Row to place marker in the grid
@@ -55,19 +73,44 @@ class Game():
         Returns:
             bool: Returns True if the marker was placed, otherwise returns False
         """
-        error = self.valid_spot()
-        if error != "":
-            print(error)
-            return False
-        else:
+        try:
+            row, col = self.get_grid_ref(grid_ref)
+            self.valid_spot(row, col)
             self.grid[row][col] = self.go
-            self.swap_go()
             return True
+        except ValueError as e:
+            print(e)
+            return False
         
-    def play_turn(self) -> NoReturn:
+    def play_turn(self) -> str:
         """Get current players input on where to place their marker until they choose a valid space
 
         Returns:
-            NoReturn: _description_
+            str: If a the current player wins, returns their symbol
+                otherwise, returns ""
         """
+        marker_placed = False
+        print(f"{self.go}'s turn")
+        print("Where would you like to place your marker?")
+        while not marker_placed:
+            grid_ref = input(": ", len=2)
+            marker_placed = self.place_marker()
+            if not marker_placed:
+                print("Turn not taken due to above error, please try again")
+        if self.check_winner():
+            return self.go
+        else:
+            self.swap_go()
+            self.display_grid()
+            return ""
+        
+    def check_winner(self) -> bool:
+        """Checks if the current player has managed to get three in a row
+
+        Returns:
+            bool: True if the current player has managed 3 in a row, false otherwise
+        """
+        return False
+        
+        
         

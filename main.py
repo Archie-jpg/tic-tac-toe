@@ -3,7 +3,7 @@ from tic_tac_toe import Game
 
 def main():
     game = Game()
-    game.print_grid()
+    game.display_grid()
     input()
     
 def play_game():
