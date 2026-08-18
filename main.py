@@ -9,6 +9,8 @@ def play_game():
     winner = ""
     while winner == "":
         winner = game.play_turn()
+    game.display_grid()
+    print(f"{winner} WINS!")
 
 if __name__ == "__main__":
     sys.exit(main())

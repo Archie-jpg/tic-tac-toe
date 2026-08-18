@@ -111,7 +111,6 @@ class Game():
         # check rows
         for row in range(3):
             for col in range(3):
-                print(self.grid[row][col])
                 if self.grid[row][col] != self.go:
                     winner = False
                     break
@@ -122,7 +121,6 @@ class Game():
                 return True
         for col in range(3):
             for row in range(3):
-                print(self.grid[row][col])
                 if self.grid[row][col] != self.go:
                     winner = False
                     break
