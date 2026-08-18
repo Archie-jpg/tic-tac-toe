@@ -1,10 +1,14 @@
 from typing import NoReturn
 
 class Game():
-    grid = [[" "," "," "],
-            [" "," "," "],
-            [" "," "," "]]
-    go = "O"
+    grid: list[list]
+    go: str
+    
+    def __init__(self):
+        self.grid = [[" "," "," "],
+                    [" "," "," "],
+                    [" "," "," "]]
+        self.go = "O"
 
     def display_grid(self):
         """Uses print statements to display the current state of the grid"""
