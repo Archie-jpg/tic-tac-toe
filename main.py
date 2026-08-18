@@ -8,6 +8,9 @@ def main():
     
 def play_game():
     game = Game()
+    winner = ""
+    while winner == "":
+        winner = game.play_turn()
 
 if __name__ == "__main__":
     sys.exit(main())

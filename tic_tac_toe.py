@@ -91,17 +91,17 @@ class Game():
         """
         marker_placed = False
         print(f"{self.go}'s turn")
+        self.display_grid()
         print("Where would you like to place your marker?")
         while not marker_placed:
             grid_ref = input(": ", len=2)
             marker_placed = self.place_marker()
             if not marker_placed:
-                print("Turn not taken due to above error, please try again")
+                print("Marker not placed due to above error, please try again")
         if self.check_winner():
             return self.go
         else:
             self.swap_go()
-            self.display_grid()
             return ""
         
     def check_winner(self) -> bool:
