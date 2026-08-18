@@ -119,7 +119,36 @@ class Game():
                     winner = True
                     continue
             if winner:
-                return self.go
+                return True
+        for col in range(3):
+            for row in range(3):
+                print(self.grid[row][col])
+                if self.grid[row][col] != self.go:
+                    winner = False
+                    break
+                else:
+                    winner = True
+                    continue
+            if winner:
+                return True
+        for diagonal in range(3):
+            if self.grid[diagonal][diagonal] != self.go:
+                winner = False
+                break
+            else:
+                winner = True
+                continue
+        if winner:
+            return True
+        for diagonal in range(3):
+            if self.grid[diagonal][2-diagonal] != self.go:
+                winner = False
+                break
+            else:
+                winner = True
+                continue
+        if winner:
+            return True
         return False
         
         
