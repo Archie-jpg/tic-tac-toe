@@ -74,9 +74,9 @@ class Game():
             bool: Returns True if the marker was placed, otherwise returns False
         """
         try:
-            row, col = self.get_grid_ref(grid_ref)
-            self.valid_spot(row, col)
-            self.grid[col][row] = self.go
+            col, row = self.get_grid_ref(grid_ref)
+            self.valid_spot(row=row, col=col)
+            self.grid[row][col] = self.go
             return True
         except ValueError as e:
             print(e)
@@ -108,6 +108,18 @@ class Game():
         Returns:
             bool: True if the current player has managed 3 in a row, false otherwise
         """
+        # check rows
+        for row in range(3):
+            for col in range(3):
+                print(self.grid[row][col])
+                if self.grid[row][col] != self.go:
+                    winner = False
+                    break
+                else:
+                    winner = True
+                    continue
+            if winner:
+                return self.go
         return False
         
         
