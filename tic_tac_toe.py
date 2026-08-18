@@ -76,7 +76,7 @@ class Game():
         try:
             row, col = self.get_grid_ref(grid_ref)
             self.valid_spot(row, col)
-            self.grid[row][col] = self.go
+            self.grid[col][row] = self.go
             return True
         except ValueError as e:
             print(e)
@@ -94,10 +94,8 @@ class Game():
         self.display_grid()
         print("Where would you like to place your marker?")
         while not marker_placed:
-            grid_ref = input(": ", len=2)
-            marker_placed = self.place_marker()
-            if not marker_placed:
-                print("Marker not placed due to above error, please try again")
+            grid_ref = input(": ")
+            marker_placed = self.place_marker(grid_ref)
         if self.check_winner():
             return self.go
         else:

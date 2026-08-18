@@ -2,9 +2,7 @@ import sys
 from tic_tac_toe import Game
 
 def main():
-    game = Game()
-    game.display_grid()
-    input()
+    play_game()
     
 def play_game():
     game = Game()
