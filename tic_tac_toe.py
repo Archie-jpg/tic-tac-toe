@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import NoReturn
+from copy import deepcopy
 
 class Result(Enum):
     UNFINISHED = "Unfinished"
@@ -126,7 +127,7 @@ class Board():
                     return False
         return True
                             
-    def check_for_winner(self, symbol: str) -> Result:
+    def get_current_result(self, symbol: str) -> Result:
         """Checks if the symbol given has managed to get three in a row
 
         Returns:
@@ -191,7 +192,7 @@ class Game():
         """
         marker_placed = False
         print(f"{self.go}'s turn")
-        self.display_grid()
+        self.board.display_grid()
         print("Where would you like to place your marker?")
         while not marker_placed:
             grid_ref = input(": ")
@@ -200,7 +201,9 @@ class Game():
                 marker_placed = self.board.place_marker(self.go, row, col)
             except ValueError as e:
                 print(e)
-        result = self.board.check_for_winner(self.go)
+                
+    def check_for_winner(self):
+        result = self.board.get_current_result(self.go)
         if result == Result.WIN:
             return f"{self.go} WINS!"
         elif result == Result.DRAW:
@@ -209,8 +212,50 @@ class Game():
             self.swap_go()
             return ""
         
+    def play_game(self) -> NoReturn:
+        result = ""
+        while result == "":
+            self.play_turn()
+            print(self.go)
+            result = self.check_for_winner()
+        self.board.display_grid()
+        print(result)
+        
 
 class GameVsComputer(Game):
-    def computer_turn(self):
-        pass
-        
+    computer_go: str = "X"
+    
+    def play_turn(self):
+        if self.go == self.computer_go:
+            self.play_computer_turn()
+        else:
+            super().play_turn()
+    
+    def play_computer_turn(self):
+        to_block: tuple = (-1, -1)
+        for row in range(3):
+            for col in range(3):
+                self.test_board = deepcopy(self.board)
+                self.go = self.computer_go
+                # Check if it can win in a spot
+                if self.test_board.place_marker(self.go, row, col):
+                    if self.test_board.get_current_result(self.go) == Result.WIN:
+                        self.board.place_marker(self.go, row, col)
+                        return
+                    self.test_board = deepcopy(self.board)
+                    self.swap_go()
+                    # Check if it can block opponent winning
+                    self.test_board.place_marker(self.go, row, col)
+                    if self.test_board.get_current_result(self.go)  == Result.WIN:
+                        to_block = (row, col)
+        self.go = self.computer_go
+        if to_block != (-1, -1):
+            self.board.place_marker(self.go, to_block[0], to_block[1])
+        else:
+            if self.board.place_marker(self.go, 1, 1):
+                return
+            for row in range(3):
+                for col in range(3):
+                    if self.board.place_marker(self.go, row, col):
+                        return
+  

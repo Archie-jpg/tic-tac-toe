@@ -8,7 +8,7 @@ class TestCheckWinner(unittest.TestCase):
         for row in range(3):
             board: Board = Board()
             board.grid[row] = ["O","O","O"]
-            self.assertEqual(board.check_for_winner("O"), Result.WIN)
+            self.assertEqual(board.get_current_result("O"), Result.WIN)
             
     def test_winning_column(self):
         """If there is a three in a row in a column, a winner is detected"""
@@ -16,7 +16,7 @@ class TestCheckWinner(unittest.TestCase):
             board: Board = Board()
             for row in range(3):
                 board.grid[row][col] = "O"
-            self.assertEqual(board.check_for_winner("O"), Result.WIN)
+            self.assertEqual(board.get_current_result("O"), Result.WIN)
             
     def test_winning_forward_diagonal(self):
         """If there is a three in a row in the forward diagonal, a winner is detected"""
@@ -24,7 +24,7 @@ class TestCheckWinner(unittest.TestCase):
         board.grid = [["O"," "," "],
                     [" ","O"," "],
                     [" "," ","O"]]
-        self.assertEqual(board.check_for_winner("O"), Result.WIN)
+        self.assertEqual(board.get_current_result("O"), Result.WIN)
         
     def test_winning_backward_diagonal(self):
         """If there is a three in a row in the backward diagonal, a winnder is detected"""
@@ -32,7 +32,7 @@ class TestCheckWinner(unittest.TestCase):
         board.grid = [[" "," ","O"],
                     [" ","O"," "],
                     ["O"," "," "]]
-        self.assertEqual(board.check_for_winner("O"), Result.WIN)
+        self.assertEqual(board.get_current_result("O"), Result.WIN)
         
     def test_draw(self):
         """If all spots are filled, a result of draw is returned"""
@@ -40,4 +40,4 @@ class TestCheckWinner(unittest.TestCase):
         board.grid = [["O","X","O"],
                     ["O","X","X"],
                     ["X","O","O"]]
-        self.assertEqual(board.check_for_winner("O"), Result.DRAW)
+        self.assertEqual(board.get_current_result("O"), Result.DRAW)
