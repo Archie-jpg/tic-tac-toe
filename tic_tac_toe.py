@@ -50,7 +50,7 @@ class Board():
             print(e)
             return False
         
-    def check_row(self, row: int) -> bool:
+    def check_row(self, symbol: str, row: int) -> bool:
         """Checks whether or not there is a three in a row in the given row
 
         Args:
@@ -60,11 +60,11 @@ class Board():
             bool: True if there is three in a row, false otherwise
         """
         for col in range(3):
-            if self.grid[row][col] != self.go:
+            if self.grid[row][col] != symbol:
                 return False
         return True
     
-    def check_column(self, col: int) -> bool:
+    def check_column(self, symbol: str, col: int) -> bool:
         """Checks if there is three in a row in the given column
         
         Args:
@@ -73,11 +73,11 @@ class Board():
         Returns:
             bool: True if there is three in a row, false otherwise"""
         for row in range(3):
-            if self.grid[row][col] != self.go:
+            if self.grid[row][col] != symbol:
                 return False
         return True
     
-    def check_forward_diagonal(self, start_row: int, start_col: int) -> bool:
+    def check_forward_diagonal(self, symbol: str, start_row: int, start_col: int) -> bool:
         """Checks if there is three in a row along a forward diagonal
 
         Args:
@@ -85,11 +85,11 @@ class Board():
             start_col (int): Index of column of top diagonal square
         """
         for i in range(3):
-            if self.grid[start_row+i][start_col+i] != self.go:
+            if self.grid[start_row+i][start_col+i] != symbol:
                 return False
         return True
     
-    def check_backward_diagonal(self, start_row: int, start_col: int) -> bool:
+    def check_backward_diagonal(self, symbol: str, start_row: int, start_col: int) -> bool:
             """Checks if there is three in a row along a backward diagonal
     
             Args:
@@ -97,7 +97,7 @@ class Board():
                 start_col (int): Index of column of top diagonal square
             """
             for i in range(3):
-                if self.grid[start_row+i][start_col-i] != self.go:
+                if self.grid[start_row+i][start_col-i] != symbol:
                     return False
             return True
         
@@ -117,14 +117,14 @@ class Board():
         """
         # check rows and columns for a win
         for i in range(3):
-            if self.check_row(i):
+            if self.check_row(symbol, i):
                 return Result.WIN
-            if self.check_column(i):
+            if self.check_column(symbol, i):
                 return Result.WIN
         # Check diagonals
-        if self.check_forward_diagonal(0, 0):
+        if self.check_forward_diagonal(symbol, 0, 0):
             return Result.WIN
-        elif self.check_backward_diagonal(0,2):
+        elif self.check_backward_diagonal(symbol, 0,2):
             return Result.WIN
         if self.grid_full():
             return Result.DRAW
