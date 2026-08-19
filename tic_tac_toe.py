@@ -107,7 +107,11 @@ class Board():
         Returns:
             bool: True if all sqaures contain a marker, false otherwise
         """
-        pass
+        for row in range(3):
+            for col in range(3):
+                if self.grid[row][col] == " ":
+                    return False
+        return True
                             
     def check_for_winner(self, symbol: str) -> Result:
         """Checks if the symbol given has managed to get three in a row
@@ -126,7 +130,7 @@ class Board():
             return Result.WIN
         elif self.check_backward_diagonal(symbol, 0,2):
             return Result.WIN
-        if self.grid_full():
+        elif self.grid_full():
             return Result.DRAW
         return Result.UNFINISHED
 

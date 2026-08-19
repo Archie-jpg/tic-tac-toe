@@ -33,3 +33,11 @@ class TestCheckWinner(unittest.TestCase):
                     [" ","O"," "],
                     ["O"," "," "]]
         self.assertEqual(board.check_for_winner("O"), Result.WIN)
+        
+    def test_draw(self):
+        """If all spots are filled, a result of draw is returned"""
+        board: Board = Board()
+        board.grid = [["O","X","O"],
+                    ["O","X","X"],
+                    ["X","O","O"]]
+        self.assertEqual(board.check_for_winner("O"), Result.DRAW)
