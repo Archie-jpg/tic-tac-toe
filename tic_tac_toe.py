@@ -1,4 +1,10 @@
+from enum import Enum
 from typing import NoReturn
+
+class Result(Enum):
+    UNFINISHED = "Unfinished"
+    WIN = "Win"
+    DRAW = "Draw"
 
 class Game():
     grid: list[list]
@@ -68,7 +74,7 @@ class Game():
             self.go = "X"
             
     def place_marker(self, grid_ref: str) -> bool:
-        """Takes the grid ref and places a marker at that spot if possible. Prints out an error message if it was not possible
+        """Takes in a row and column, and places a marker at that spot if possible. Prints out an error message if it was not possible
 
         Args:
             row (int): Row to place marker in the grid
@@ -106,52 +112,85 @@ class Game():
             self.swap_go()
             return ""
         
-    def check_winner(self) -> bool:
+    def check_row(self, row: int) -> bool:
+        """Checks whether or not there is a three in a row in the given row
+
+        Args:
+            row (int): Index of row to check
+
+        Returns:
+            bool: True if there is three in a row, false otherwise
+        """
+        for col in range(3):
+            if self.grid[row][col] != self.go:
+                return False
+        return True
+    
+    def check_column(self, col: int) -> bool:
+        """Checks if there is three in a row in the given column
+        
+        Args:
+            col (int): Index of the column to check
+            
+        Returns:
+            bool: True if there is three in a row, false otherwise"""
+        for row in range(3):
+            if self.grid[row][col] != self.go:
+                return False
+        return True
+    
+    def check_forward_diagonal(self, start_row: int, start_col: int) -> bool:
+        """Checks if there is three in a row along a forward diagonal
+
+        Args:
+            start_row (int): Index of row of top diagonal square
+            start_col (int): Index of column of top diagonal square
+        """
+        for i in range(3):
+            if self.grid[start_row+i][start_col+i] != self.go:
+                return False
+        return True
+    
+    def check_backward_diagonal(self, start_row: int, start_col: int) -> bool:
+            """Checks if there is three in a row along a backward diagonal
+    
+            Args:
+                start_row (int): Index of row of top diagonal square
+                start_col (int): Index of column of top diagonal square
+            """
+            for i in range(3):
+                if self.grid[start_row+i][start_col-i] != self.go:
+                    return False
+            return True
+        
+    def grid_full(self) -> bool:
+        """Checks if all avalible squares have been filled, meaning there is no winner
+
+        Returns:
+            bool: True if all sqaures contain a marker, false otherwise
+        """
+                            
+        
+    def check_winner(self) -> Result:
         """Checks if the current player has managed to get three in a row
 
         Returns:
-            bool: True if the current player has managed 3 in a row, false otherwise
+            bool: True if the current player has managed 3 in a row, col or a diagonal, false otherwise
         """
-        # check rows
-        for row in range(3):
-            for col in range(3):
-                if self.grid[row][col] != self.go:
-                    winner = False
-                    break
-                else:
-                    winner = True
-                    continue
-            if winner:
-                return True
-        for col in range(3):
-            for row in range(3):
-                if self.grid[row][col] != self.go:
-                    winner = False
-                    break
-                else:
-                    winner = True
-                    continue
-            if winner:
-                return True
-        for diagonal in range(3):
-            if self.grid[diagonal][diagonal] != self.go:
-                winner = False
-                break
-            else:
-                winner = True
-                continue
-        if winner:
-            return True
-        for diagonal in range(3):
-            if self.grid[diagonal][2-diagonal] != self.go:
-                winner = False
-                break
-            else:
-                winner = True
-                continue
-        if winner:
-            return True
-        return False
+        # check rows and columns for a win
+        for i in range(3):
+            if self.check_row(i):
+                return Result.WIN
+            if self.check_column(i):
+                return Result.WIN
+        # Check diagonals
+        if self.check_forward_diagonal(0, 0):
+            return Result.WIN
+        elif self.check_backward_diagonal(0,2):
+            return Result.WIN
+        if self.grid_full():
+            return Result.DRAW
+        return Result.UNFINISHED
         
         
         

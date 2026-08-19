@@ -1,6 +1,6 @@
 import unittest
 import pytest
-from tic_tac_toe import Game
+from tic_tac_toe import Game, Result
 
 class TestCheckWinner(unittest.TestCase):
     def test_winning_row(self):
@@ -8,7 +8,7 @@ class TestCheckWinner(unittest.TestCase):
         for row in range(3):
             game: Game = Game()
             game.grid[row] = ["O","O","O"]
-            self.assertTrue(game.check_winner())
+            self.assertEqual(game.check_winner(), Result.WIN)
             
     def test_winning_column(self):
         """If there is a three in a row in a column, a winner is detected"""
@@ -16,7 +16,7 @@ class TestCheckWinner(unittest.TestCase):
             game: Game = Game()
             for row in range(3):
                 game.grid[row][col] = "O"
-            self.assertTrue(game.check_winner())
+            self.assertEqual(game.check_winner(), Result.WIN)
             
     def test_winning_forward_diagonal(self):
         """If there is a three in a row in the forward diagonal, a winner is detected"""
@@ -24,7 +24,7 @@ class TestCheckWinner(unittest.TestCase):
         game.grid = [["O"," "," "],
                     [" ","O"," "],
                     [" "," ","O"]]
-        self.assertTrue(game.check_winner())
+        self.assertEqual(game.check_winner(), Result.WIN)
         
     def test_winning_backward_diagonal(self):
         """If there is a three in a row in the backward diagonal, a winnder is detected"""
@@ -32,4 +32,4 @@ class TestCheckWinner(unittest.TestCase):
         game.grid = [[" "," ","O"],
                     [" ","O"," "],
                     ["O"," "," "]]
-        self.assertTrue(game.check_winner())
+        self.assertEqual(game.check_winner(), Result.WIN)
