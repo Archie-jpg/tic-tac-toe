@@ -6,11 +6,11 @@ def main():
     
 def play_game():
     game = Game()
-    winner = ""
-    while winner == "":
-        winner = game.play_turn()
+    result = ""
+    while result == "":
+        result = game.play_turn()
     game.display_grid()
-    print(f"{winner} WINS!")
+    print(result)
 
 if __name__ == "__main__":
     sys.exit(main())
