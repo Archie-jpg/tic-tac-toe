@@ -14,6 +14,19 @@ class Board():
                     [" "," "," "],
                     [" "," "," "]]
         
+    def display_grid(self):
+        """Uses print statements to display the current state of the grid"""
+        print(" " * 4, end="")
+        for i in range(3):
+            print(f"{i}", end=" " * 3)
+        print()
+        for row in range(3):
+            print(f"{row}", end=" | ")
+            for col in range(3):
+                print(f"{self.grid[row][col]}", end=" | ")
+            print()
+            print("-" * 15)
+        
     def valid_spot(self, row: int, col: int) -> NoReturn:
         """Check that the place the X or O is to be placed is on the grid and not taken
 
@@ -142,19 +155,6 @@ class Game():
     def __init__(self):
         self.go = "O"
         self.board = Board()
-
-    def display_grid(self):
-        """Uses print statements to display the current state of the grid"""
-        print(" " * 4, end="")
-        for i in range(3):
-            print(f"{i}", end=" " * 3)
-        print()
-        for row in range(3):
-            print(f"{row}", end=" | ")
-            for col in range(3):
-                print(f"{self.grid[row][col]}", end=" | ")
-            print()
-            print("-" * 15)
             
     def get_grid_ref(self, grid_ref: str) -> tuple[int, int]:
         """Check that the grid reference is valid, returning the row and column if it is
